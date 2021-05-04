@@ -66,7 +66,7 @@ const main = async () => {
   app.use(taskRouter);
 
   app.listen(4001, () => {
-    console.log("listening on port 4001");
+    console.log("listening on port: 4001");
   });
 };
 
