@@ -2,6 +2,7 @@ import { UserActionTypes } from "../actionTypes/userActionTypes";
 import { Dispatch } from "redux";
 import { UserAction } from "../actions/userActions";
 import axios from "axios";
+import { userCredentials } from "../types/userCredentials";
 export const loginStart = (username: string, password: string) => async (
   dispatch: Dispatch<UserAction>
 ) => {
@@ -10,7 +11,7 @@ export const loginStart = (username: string, password: string) => async (
   });
 
   try {
-    const result = await axios.post("/login", {
+    const result = await axios.post("/api/login", {
       username,
       password,
     });
@@ -43,9 +44,7 @@ export const authenticateUser = () => async (
       withCredentials: true,
     });
     const data = result.data;
-    console.log(data);
     if (data.user) {
-      console.log(data.user);
       const userData = {
         id: data.user.id,
         username: data.user.username,
@@ -65,8 +64,42 @@ export const logoutStart = () => async (dispatch: Dispatch<UserAction>) => {
   dispatch({
     type: UserActionTypes.LOGOUT_START,
   });
-  const result = await axios.post("/logout");
+  const result = await axios.post("/api/logout");
   dispatch({
     type: UserActionTypes.LOGOUT_SUCCESS,
   });
+};
+
+export const signupStart = (userCredentials: userCredentials) => async (
+  dispatch: Dispatch<UserAction>
+) => {
+  dispatch({
+    type: UserActionTypes.SIGNUP_START,
+  });
+
+  try {
+    const data = await (await axios.post("/api/register", userCredentials))
+      .data;
+
+    if (data.newUser) {
+      dispatch({
+        type: UserActionTypes.LOGIN_SUCCESS,
+        payload: {
+          id: data.newUser.id,
+          username: data.newUser.username,
+          email: data.newUser.email,
+        },
+      });
+    } else {
+      dispatch({
+        type: UserActionTypes.SIGNUP_FAILURE,
+        payload: data.error,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: UserActionTypes.SIGNUP_FAILURE,
+      payload: err.message,
+    });
+  }
 };

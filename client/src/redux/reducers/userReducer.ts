@@ -31,6 +31,12 @@ const reducer = (
       return { ...state, pending: true };
     case UserActionTypes.LOGOUT_SUCCESS:
       return { ...state, user: null, pending: false };
+
+    case UserActionTypes.SIGNUP_START:
+      return { ...state, pending: true };
+
+    case UserActionTypes.SIGNUP_FAILURE:
+      return { ...state, pending: false, error: action.payload };
     default:
       return { ...state };
   }

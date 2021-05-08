@@ -5,4 +5,13 @@ export enum TaskActionTypes {
   FETCH_TASKS_START = "fetch_tasks_start",
   FETCH_TASKS_SUCCESS = "fetch_tasks_success",
   FETCH_TASKS_ERROR = "fetch_task_error",
+  DELETE_TASK_START = "delete_task_start",
+  DELETE_TASK_SUCCESS = "delete_task_success",
+  DELETE_TASK_ERROR = "delete_task_error",
+  CREATE_TASK_START = "create_task_start",
+  CREATE_TASK_SUCCESS = "create_task_success",
+  CREATE_TASK_ERROR = "create_task_error",
+  UPDATE_TASK_START = "update_task_start",
+  UPDATE_TASK_SUCCESS = "update_task_success",
+  UPDATE_TASK_ERRORR = "update_task_error",
 }

@@ -4,3 +4,29 @@
   max-width: 420px;
   // background-color: rgb(170, 206, 159);
 }
+
+h2 {
+  text-align: center;
+}
+
+.column-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  button {
+    max-height: 35px;
+    margin-left: 10px;
+    align-self: center;
+    cursor: pointer;
+    margin-bottom: 1.5em;
+  }
+  h2 {
+    align-self: center;
+  }
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 5px;
+}

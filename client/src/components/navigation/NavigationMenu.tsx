@@ -15,12 +15,11 @@ const NavigationMenu: FC = () => {
     (link) => isLoggedIn || link.login === false
   );
 
-  console.log(user);
   return (
     <div id="navbarExampleTransparentExample" className="navbar-menu">
       <div className="navbar-start">
         {startNavItems.map((item) => (
-          <NavigationItem linkTo={item.path} link="Home">
+          <NavigationItem key={item.name} linkTo={item.path} link="Home">
             <button className="button is-primary">{item.name}</button>
           </NavigationItem>
         ))}

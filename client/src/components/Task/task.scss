@@ -1,3 +1,9 @@
 .task {
   cursor: pointer;
+  transition: all 5s;
+}
+
+.btn-edit {
+  background-color: #3273dc;
+  cursor: pointer;
 }

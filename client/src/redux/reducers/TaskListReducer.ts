@@ -1,61 +1,29 @@
 import { TaskActionTypes } from "../actionTypes/taskActionTypes";
-import { Action } from "../actions/taskActions";
+import { TaskAction } from "../actions/taskActions";
 import { Task } from "../types/TaskType";
 import { removeTask } from "./helpers/removeTask";
 import { changeStatus } from "./helpers/changeStatus";
+import { updateTask } from "./helpers/updateTask";
+import { setLoading } from "./helpers/setLoading";
+import { stat } from "node:fs";
 
 interface TaskListState {
   tasks: Task[];
   isFetching: boolean;
   errorMessage: string | undefined;
+  loadingNewTask: boolean;
 }
 
 const initState = {
-  tasks: [
-    {
-      id: "abc",
-      title: "title1",
-      body: "kokoko",
-      status: "TODO",
-    },
-    {
-      id: "dfddfdfdf",
-      title: "title2",
-      body: "kokoko",
-      status: "TODO",
-    },
-    {
-      id: "jiort",
-      title: "title3",
-      body: "kokoko",
-      status: "IN_PROGRESS",
-    },
-    {
-      id: "fjgeoeg",
-      title: "title4",
-      body: "kokoko",
-      status: "IN_PROGRESS",
-    },
-    {
-      id: "jfwepfwepfw",
-      title: "title5",
-      body: "kokoko",
-      status: "IN_TEST",
-    },
-    {
-      id: "djfkdpwe",
-      title: "title6",
-      body: "kokoko",
-      status: "IN_TEST",
-    },
-  ],
+  tasks: [],
   isFetching: false,
   errorMessage: undefined,
+  loadingNewTask: false,
 };
 
 const reducer = (
   state: TaskListState = initState,
-  action: Action
+  action: TaskAction
 ): TaskListState => {
   switch (action.type) {
     case TaskActionTypes.ADD_NEW_TASK:
@@ -69,10 +37,49 @@ const reducer = (
           action.payload.newStatus
         ),
       };
-    case TaskActionTypes.DELETE_TASK:
+    case TaskActionTypes.DELETE_TASK_SUCCESS:
       return {
         ...state,
         tasks: removeTask(state.tasks, action.payload),
+      };
+
+    case TaskActionTypes.FETCH_TASKS_START: {
+      return { ...state, isFetching: true };
+    }
+
+    case TaskActionTypes.FETCH_TASKS_SUCCESS: {
+      return {
+        ...state,
+        tasks: action.payload,
+        isFetching: false,
+        errorMessage: undefined,
+      };
+    }
+
+    case TaskActionTypes.FETCH_TASKS_ERROR: {
+      return { ...state, isFetching: false, errorMessage: action.payload };
+    }
+
+    case TaskActionTypes.DELETE_TASK_START:
+      return { ...state, tasks: setLoading(state.tasks, action.payload, true) };
+
+    case TaskActionTypes.CREATE_TASK_START:
+      return { ...state, loadingNewTask: true };
+
+    case TaskActionTypes.CREATE_TASK_SUCCESS:
+      return {
+        ...state,
+        loadingNewTask: false,
+        tasks: [...state.tasks, action.payload],
+      };
+
+    case TaskActionTypes.CREATE_TASK_ERROR:
+      return { ...state, loadingNewTask: false, errorMessage: action.payload };
+
+    case TaskActionTypes.UPDATE_TASK_SUCCESS:
+      return {
+        ...state,
+        tasks: updateTask(state.tasks, action.payload.id, action.payload.data),
       };
 
     default:

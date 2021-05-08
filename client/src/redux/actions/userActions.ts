@@ -1,8 +1,13 @@
 import { UserActionTypes } from "../actionTypes/userActionTypes";
+import { userCredentials } from "../types/userCredentials";
 import { UserType } from "../types/UserType";
 
 export interface loginStart {
   type: UserActionTypes.LOGIN_START;
+}
+
+export interface SignupStart {
+  type: UserActionTypes.SIGNUP_START;
 }
 
 export interface LoginSucces {
@@ -30,6 +35,7 @@ export interface logoutStart {
 
 export interface SignUpSuccess {
   type: UserActionTypes.SIGNUP_SUCCESS;
+  payload: userCredentials;
 }
 
 export interface SignUpFailure {
@@ -39,6 +45,7 @@ export interface SignUpFailure {
 
 export type UserAction =
   | loginStart
+  | SignupStart
   | LoginSucces
   | LoginFailure
   | LogoutFailure
