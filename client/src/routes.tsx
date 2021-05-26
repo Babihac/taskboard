@@ -6,6 +6,11 @@ import LoginPage from "./pages/loginPage/LoginPage";
 import { useTypedSelector } from "./hooks/useTypedSelector";
 import { RouteType } from "./components/navigation/RouteType";
 import RegisterPage from "./pages/registerPage/RegisterPage";
+import ProfilePage from "./pages/profilePage/ProfilePage";
+import UserInfo from "./components/userInfo/UserInfo";
+import ChangePassword from "./components/changePassword/ChangePassword";
+import RenderRoutes from "./components/RenderRoutes";
+import ProjectPage from "./pages/projectsPage/ProjectsPage";
 
 export const routes: RouteType[] = [
   {
@@ -66,5 +71,74 @@ export const routes: RouteType[] = [
     key: "Register",
     navigationPos: "end",
     login: false,
+  },
+
+  {
+    path: "/projects",
+    Component: ProjectPage,
+    exact: true,
+    routes: [],
+    key: "Projects",
+    navigationPos: "start",
+    login: true,
+  },
+
+  {
+    path: "/my-profile",
+    Component: RenderRoutes,
+    exact: false,
+    routes: [
+      {
+        path: "/my-profile",
+        key: "My Profile Root",
+        exact: true,
+        Component: () => {
+          const user = useTypedSelector((state) => state.user.user);
+          if (user) {
+            return (
+              <ProfilePage>
+                <UserInfo />
+              </ProfilePage>
+            );
+          }
+          return <Redirect to="/" />;
+        },
+        navigationPos: "end",
+        login: true,
+        routes: [],
+      },
+
+      {
+        path: "/my-profile/changePassword",
+        key: "ChangePassword",
+        exact: true,
+        Component: () => {
+          const user = useTypedSelector((state) => state.user.user);
+          if (user) {
+            return (
+              <ProfilePage>
+                <ChangePassword />
+              </ProfilePage>
+            );
+          }
+          return <Redirect to="/" />;
+        },
+        navigationPos: "end",
+        login: true,
+        routes: [],
+      },
+      {
+        path: "/my-profile/myProfile",
+        key: "ChangePassword",
+        exact: true,
+        Component: UserInfo,
+        navigationPos: "end",
+        login: true,
+        routes: [],
+      },
+    ],
+    key: "MyProfile",
+    navigationPos: "end",
+    login: true,
   },
 ];

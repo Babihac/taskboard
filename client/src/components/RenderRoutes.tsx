@@ -9,6 +9,7 @@ const RenderRoutes: FC<renderRoutesProps> = ({ routes }) => {
   return (
     <Switch>
       {routes.map((route, i) => {
+        console.log(route.routes);
         return (
           <Route
             key={route.key}

@@ -5,6 +5,7 @@ import { useUserAction } from "../../hooks/useUserAction";
 import "./navigationMenu.scss";
 import { routes } from "../../routes";
 import { links } from "../../links";
+import { Link } from "react-router-dom";
 
 const NavigationMenu: FC = () => {
   const user = useTypedSelector((state) => state.user.user);
@@ -38,6 +39,9 @@ const NavigationMenu: FC = () => {
             </a>
 
             <div className="navbar-dropdown">
+              <Link to="/my-profile" className="navbar-item">
+                My Profile
+              </Link>
               <a className="navbar-item">Settings</a>
               <hr className="navbar-divider" />
               <a className="navbar-item">Logout</a>

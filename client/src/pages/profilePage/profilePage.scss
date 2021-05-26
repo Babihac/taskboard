@@ -1,0 +1,31 @@
+.update-profile-box {
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  height: 100vh;
+}
+
+.right-menu {
+  margin-right: auto;
+  height: 100%;
+  flex-grow: 1;
+  background-color: white;
+  max-width: 300px;
+}
+.menu-item {
+  padding: 5px 10px;
+  cursor: pointer;
+  padding-left: 30px;
+  width: 80%;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  display: block;
+  color: black;
+}
+
+.menu-item:hover {
+  background-color: rgb(255, 169, 241);
+}

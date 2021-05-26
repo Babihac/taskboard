@@ -8,4 +8,10 @@ export enum UserActionTypes {
   LOGOUT_START = "logout_start",
   LOGOUT_SUCCESS = "logout_success",
   LOGOUT_FAILURE = "logout_failure",
+  UPDATE_USER_START = "update_user_start",
+  UPDATE_USER_SUCCESS = "update_user_success",
+  UPDATE_USER_PASSWORD_START = "update_user_password_start",
+  UPDATE_USER_PASSWORD_SUCCESS = "update_user_password_success",
+  UPDATE_USER_PASSWORD_FAILURE = "update_user_password_failure",
+  REMOVE_MESSAGE = "remove_message",
 }

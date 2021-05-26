@@ -1,6 +1,7 @@
 import { UserActionTypes } from "../actionTypes/userActionTypes";
 import { userCredentials } from "../types/userCredentials";
 import { UserType } from "../types/UserType";
+import { UserUpdateInterface } from "../types/userUpdateData";
 
 export interface loginStart {
   type: UserActionTypes.LOGIN_START;
@@ -43,6 +44,32 @@ export interface SignUpFailure {
   payload: string;
 }
 
+export interface UpdateUserStart {
+  type: UserActionTypes.UPDATE_USER_START;
+}
+
+export interface UpdateUserSuccess {
+  type: UserActionTypes.UPDATE_USER_SUCCESS;
+  payload: UserType;
+}
+
+export interface UpdateUserPasswordStart {
+  type: UserActionTypes.UPDATE_USER_PASSWORD_START;
+}
+export interface UpdateUserPasswordSuccess {
+  type: UserActionTypes.UPDATE_USER_PASSWORD_SUCCESS;
+  payload: string;
+}
+
+export interface UpdateUserPasswordFailure {
+  type: UserActionTypes.UPDATE_USER_PASSWORD_FAILURE;
+  payload: string;
+}
+
+export interface RemoveMessage {
+  type: UserActionTypes.REMOVE_MESSAGE;
+}
+
 export type UserAction =
   | loginStart
   | SignupStart
@@ -52,4 +79,10 @@ export type UserAction =
   | LogoutSuccess
   | logoutStart
   | SignUpFailure
-  | SignUpSuccess;
+  | SignUpSuccess
+  | UpdateUserStart
+  | UpdateUserSuccess
+  | UpdateUserPasswordStart
+  | UpdateUserPasswordSuccess
+  | UpdateUserPasswordFailure
+  | RemoveMessage;
