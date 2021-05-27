@@ -103,3 +103,45 @@ export const taskById = async (id: number): Promise<TaskResult> => {
     task,
   };
 };
+
+export const deleteTaskById = async (id: number): Promise<string> => {
+  const task = await getConnection().manager.findOne(Task, { id });
+  if (!task) {
+    return `Task with id ${id} not found`;
+  }
+  await task.remove();
+  return `Task with id ${id} was deleted`;
+};
+
+export const updateTaskById = async (
+  id: number,
+  data: { status?: string; body?: string; title?: string }
+): Promise<TaskResult> => {
+  const task = await getConnection().manager.findOne(Task, { id });
+
+  if (!task) {
+    return {
+      messages: [`Task with id ${id} does not exist`],
+    };
+  }
+
+  const date = new Date();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  const updatedTask = await getConnection().manager.save(Task, {
+    ...task,
+    ...data,
+    lastModifiedOn: `${date.getFullYear()}-${month}-${day} ${date.getHours()}:${date.getMinutes()}`,
+  });
+
+  return {
+    task: updatedTask,
+  };
+
+  // const updatedTask = await getConnection()
+  //   .createQueryBuilder()
+  //   .update(Task)
+  //   .set({ ...data })
+  //   .where("id:=id", { id })
+  //   .execute();
+};

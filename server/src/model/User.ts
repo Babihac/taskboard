@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Length } from "class-validator";
 import { Task } from "./Task";
 import { Auditable } from "./Auditable";
+import { Project } from "./Project";
 
 @Entity({ name: "user" })
 export class User extends Auditable {
@@ -42,4 +43,7 @@ export class User extends Auditable {
 
   @OneToMany(() => Task, (task) => task.user)
   tasks: Task[];
+
+  @OneToMany(() => Task, (task) => task.user)
+  projects: Project[];
 }

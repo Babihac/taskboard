@@ -2,6 +2,8 @@ import express from "express";
 import { createConnection } from "typeorm";
 import authRoter from "./routes/authRoutes";
 import taskRouter from "./routes/taskRoute";
+import userRouter from "./routes/userRoutes";
+import projectRouter from "./routes/projectRoutes";
 import bodyParser from "body-parser";
 import cors from "cors";
 import session from "express-session";
@@ -64,6 +66,8 @@ const main = async () => {
 
   app.use(authRoter);
   app.use(taskRouter);
+  app.use(userRouter);
+  app.use(projectRouter);
 
   app.listen(4001, () => {
     console.log("listening on port: 4001");
