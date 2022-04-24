@@ -6,7 +6,9 @@ export const MainInfo = () => {
 
   return (
     <div>
-      <div className="mb-3">Main Info</div>
+      <div style={{ textAlign: "center", fontSize: "2rem" }} className="mb-3">
+        Main Info
+      </div>
       <div className="field">
         <p className="control">
           <input

@@ -6,9 +6,12 @@ export const UserInfo = () => {
 
   return (
     <div>
-      <div className="mb-3">User Info</div>
+      <div style={{ textAlign: "center", fontSize: "2rem" }} className="mb-3">
+        User Info
+      </div>
       <div className="field">
         <p className="control">
+          <label htmlFor="">User Name</label>
           <input
             required
             {...registerFormValue("username")}
@@ -20,6 +23,7 @@ export const UserInfo = () => {
       </div>
       <div className="field">
         <p className="control">
+          <label htmlFor="">Email</label>
           <input
             required
             {...registerFormValue("email")}

@@ -6,7 +6,9 @@ export const Password = () => {
 
   return (
     <div>
-      <div className="mb-3">Password</div>
+      <div style={{ textAlign: "center", fontSize: "2rem" }} className="mb-3">
+        Password
+      </div>
       <div className="field">
         <p className="control">
           <input

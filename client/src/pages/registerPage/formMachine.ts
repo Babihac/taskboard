@@ -9,8 +9,6 @@ import {
 } from "xstate";
 import { MainInfo, Password, UserInfo } from "./steps";
 
-export type Event = { type: "NEXT" } | { type: "PREV" };
-
 const stepMap = {
   mainInfo: {
     currentStepNumber: 0,
@@ -32,6 +30,8 @@ const changeStep = assign<Context, Event>({
     return stepMap[step];
   },
 });
+
+export type Event = { type: "NEXT" } | { type: "PREV" };
 
 type Context = {
   step: { currentStepNumber: number; CurrentStep: React.FC };
