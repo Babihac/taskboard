@@ -62,7 +62,12 @@ const main = async () => {
       `userid: ${req.session!.userid}, loadedCount: ${req.session!.loadedCount}`
     );
   });
-  await createConnection();
+
+  try {
+    await createConnection();
+  } catch (err) {
+    console.log(err);
+  }
 
   app.use(authRoter);
   app.use(taskRouter);

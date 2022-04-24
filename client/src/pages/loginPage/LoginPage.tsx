@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import react, { FC } from "react";
 import { Redirect } from "react-router-dom";
 import "./loginPage.scss";
 import { useFormInput } from "../../hooks/useFormInput";
 import { useUserAction } from "../../hooks/useUserAction";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { LanguageContext } from "../../languageContext/context";
 const LoginPage: FC = () => {
+  const { languageModel } = useContext(LanguageContext);
   const { loginStart } = useUserAction();
   const username = useFormInput("");
   const password = useFormInput("");
@@ -25,15 +27,15 @@ const LoginPage: FC = () => {
   return (
     <div className="container">
       <form onSubmit={handleSubmit} className="login-form">
-        <h1 className="mb-5">Sign In</h1>
-        {error && <p>Invalid username or password {error} </p>}
+        <h1 className="mb-5">{languageModel.login.signInText}</h1>
+        {error && <p>{languageModel.login.errorMessage} </p>}
         <div className="field">
           <p className="control">
             <input
               {...username}
               className="input"
               type="text"
-              placeholder="Username"
+              placeholder={languageModel.login.userName}
             />
           </p>
         </div>
@@ -43,7 +45,7 @@ const LoginPage: FC = () => {
               {...password}
               className="input"
               type="password"
-              placeholder="Password"
+              placeholder={languageModel.login.password}
             />
           </p>
         </div>
@@ -54,7 +56,7 @@ const LoginPage: FC = () => {
                 pending ? "is-loading" : ""
               }`}
             >
-              Login
+              {languageModel.login.login}
             </button>
           </p>
         </div>

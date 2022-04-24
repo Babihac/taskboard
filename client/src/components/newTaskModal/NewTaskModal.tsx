@@ -47,9 +47,6 @@ const NewTaskModal: FC<NewTaskModalProps> = ({
   );
 
   const handleCreateNewTask = async () => {
-    console.log(status);
-    console.log(content);
-    console.log(title.value);
     await createNewTask({
       title: title.value,
       body: content,

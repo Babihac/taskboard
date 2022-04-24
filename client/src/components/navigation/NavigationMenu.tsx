@@ -1,4 +1,4 @@
-import react, { FC } from "react";
+import react, { FC, useContext } from "react";
 import NavigationItem from "./NavigationItem";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useUserAction } from "../../hooks/useUserAction";
@@ -6,8 +6,11 @@ import "./navigationMenu.scss";
 import { routes } from "../../routes";
 import { links } from "../../links";
 import { Link } from "react-router-dom";
+import { LanguageContext } from "../../languageContext/context";
 
 const NavigationMenu: FC = () => {
+  const { languageModel, language, setLanguage } = useContext(LanguageContext);
+  const btnLang = language === "cz" ? "EN" : "CZ";
   const user = useTypedSelector((state) => state.user.user);
   const isLoggedIn = user ? true : false;
   const pending = useTypedSelector((state) => state.user.pending);
@@ -49,21 +52,43 @@ const NavigationMenu: FC = () => {
           </div>
         )}
         {user ? (
-          <NavigationItem linkTo={user ? "/logout" : "login"} link="Logout">
-            <button
-              onClick={() => logoutStart()}
-              className={`button is-danger ${pending ? "is-loading" : ""}`}
-            >
-              Logout
-            </button>
-          </NavigationItem>
+          <>
+            <div className="navbar-item">
+              <button
+                onClick={() => setLanguage(language === "cz" ? "en" : "cz")}
+                className="button "
+              >
+                {btnLang}
+              </button>
+            </div>
+            <NavigationItem linkTo={user ? "/logout" : "login"} link="Logout">
+              <button
+                onClick={() => logoutStart()}
+                className={`button is-danger ${pending ? "is-loading" : ""}`}
+              >
+                Logout
+              </button>
+            </NavigationItem>
+          </>
         ) : (
           <>
+            <div className="navbar-item">
+              <button
+                onClick={() => setLanguage(language === "cz" ? "en" : "cz")}
+                className="button "
+              >
+                {btnLang}
+              </button>
+            </div>
             <NavigationItem linkTo="/login" link="Login">
-              <button className="button">Login</button>
+              <button className="button">
+                {languageModel.navigation.login}
+              </button>
             </NavigationItem>
             <NavigationItem linkTo="/register" link="Login">
-              <button className="button is-primary">Sign Up</button>
+              <button className="button is-primary">
+                {languageModel.navigation.signUp}
+              </button>
             </NavigationItem>
           </>
         )}

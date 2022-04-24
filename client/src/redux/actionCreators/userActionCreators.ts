@@ -84,7 +84,7 @@ export const signupStart =
       const data = await (
         await axios.post("/api/register", userCredentials)
       ).data;
-
+      console.log("DATA", data);
       if (data.newUser) {
         dispatch({
           type: UserActionTypes.LOGIN_SUCCESS,

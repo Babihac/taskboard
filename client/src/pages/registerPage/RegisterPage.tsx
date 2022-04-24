@@ -1,29 +1,36 @@
-import react, { FC } from "react";
+import react, { FC, useContext, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useFormInput } from "../../hooks/useFormInput";
+import { useForm } from "../../hooks/useForm";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useUserAction } from "../../hooks/useUserAction";
+import { Stepper } from "react-form-stepper";
+import FormProvider, { FormContext } from "./FormProvider";
 import "./registerPage.scss";
+import { useMachine } from "@xstate/react";
+import formMachine from "./formMachine";
+
+interface Form {
+  firstName: string;
+  lastName: string;
+  password: string;
+  passwordConfirm: string;
+  email: string;
+  username: string;
+}
+
 const RegisterPage: FC = () => {
-  const user = useTypedSelector((state) => state.user);
-  const username = useFormInput("");
-  const email = useFormInput("");
-  const password = useFormInput("");
-  const passwordConfirm = useFormInput("");
-  const firstname = useFormInput("");
-  const lastname = useFormInput("");
   const { signupStart } = useUserAction();
+  const [current, send] = useMachine(formMachine);
+  const user = useTypedSelector((state) => state.user);
+  const { form } = useContext(FormContext);
+  const { CurrentStep, currentStepNumber } = current.context.step;
+  const { lastStep } = current.context;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("CALLED");
     e.preventDefault();
-    signupStart({
-      firstName: firstname.value,
-      lastName: lastname.value,
-      password: password.value,
-      passwordConfirm: passwordConfirm.value,
-      email: email.value,
-      username: username.value,
-    });
+    signupStart(form);
   };
 
   if (user.user) {
@@ -33,83 +40,64 @@ const RegisterPage: FC = () => {
   return (
     <div className="container">
       {user.error && <p>{user.error[0]}</p>}
+      <div className="mt-5" style={{ textAlign: "center" }}>
+        <h1 style={{ fontSize: "3rem" }}>Sign Up</h1>
+      </div>
+      <Stepper
+        steps={[
+          { label: "Main info" },
+          { label: "User info" },
+          { label: "Password" },
+        ]}
+        activeStep={currentStepNumber}
+      />
       <form onSubmit={handleSubmit} className="register-form">
-        <h1 className="mb-5">Sign In</h1>
-        <div className="field">
-          <p className="control">
-            <input
-              required
-              {...firstname}
-              className="input"
-              type="text"
-              placeholder="First Name"
-            />
-          </p>
-        </div>
-        <div className="field">
-          <p className="control">
-            <input
-              required
-              {...lastname}
-              className="input"
-              type="text"
-              placeholder="Last Name"
-            />
-          </p>
-        </div>
-        <div className="field">
-          <p className="control">
-            <input
-              required
-              {...username}
-              className="input"
-              type="text"
-              placeholder="Username"
-            />
-          </p>
-        </div>
-        <div className="field">
-          <p className="control">
-            <input
-              required
-              {...email}
-              className="input"
-              type="email"
-              placeholder="Email"
-            />
-          </p>
-        </div>
-        <div className="field">
-          <p className="control">
-            <input
-              required
-              {...password}
-              className="input"
-              type="password"
-              placeholder="Password"
-            />
-          </p>
-        </div>
+        <CurrentStep />
+        <div className="field mt-5">
+          <div
+            style={{ display: "flex" }}
+            className="is-flex-direction-row is-justify-content-space-between"
+          >
+            {currentStepNumber > 0 && (
+              <button
+                onClick={() => {
+                  send({ type: "PREV" });
+                }}
+                type="button"
+                className={`button is-success `}
+              >
+                Previos
+              </button>
+            )}
 
-        <div className="field">
-          <p className="control">
-            <input
-              required
-              {...passwordConfirm}
-              className="input"
-              type="password"
-              placeholder="Confirm Password"
-            />
-          </p>
-        </div>
-        <div className="field">
-          <p className="control">
-            <button className={`button is-success is-centered`}>Sign Up</button>
-          </p>
+            {currentStepNumber === lastStep && (
+              <button className={`button is-success `}>Sign Up</button>
+            )}
+            {currentStepNumber < lastStep && (
+              <button
+                style={{ marginLeft: "auto" }}
+                onClick={() => {
+                  send({ type: "NEXT" });
+                }}
+                type="button"
+                className={`button is-success `}
+              >
+                Next
+              </button>
+            )}
+          </div>
         </div>
       </form>
     </div>
   );
 };
 
-export default RegisterPage;
+const RegisterPageWithProvider = () => {
+  return (
+    <FormProvider>
+      <RegisterPage />
+    </FormProvider>
+  );
+};
+
+export default RegisterPageWithProvider;
